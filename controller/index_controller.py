@@ -1,0 +1,29 @@
+from flask import render_template, Blueprint
+
+from model.user import User
+from model.user_admin import Admin
+
+
+index_page = Blueprint("index_page", __name__)
+
+
+@index_page.route("/")
+def index():
+    # check the class variable User.current_login_user
+
+    # manually register an admin account when open index page
+
+    role = ""
+    if User.current_login_user:
+        role = User.current_login_user.role
+
+    admin = Admin(
+        User.generate_unique_user_id(),
+        "admin",
+        "12345678",
+        "xx-xx-xxxx",
+        "admin",
+    )
+    admin.register_admin()
+
+    return render_template("01index.html", current_user_role=role)
